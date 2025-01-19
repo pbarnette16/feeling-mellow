@@ -10,7 +10,8 @@
     "storybook": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start",
     "storybook:ios": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start --ios",
     "storybook:android": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start --android",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "ios:iPhone 14": "expo start --ios --simulator='iPhone 14'"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.6",
