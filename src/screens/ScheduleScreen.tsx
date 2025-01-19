@@ -13,7 +13,7 @@ import { TimeInput } from '@components/Input/TimeInput';
 import { Button } from '@components/Button/Button';
 import { PopupSelector } from '@components/PopupSelector/PopupSelector';
 import { useStore } from '@store/useStore';
-import CardVariants from '@constants/cardVariants';
+import CardVariants from '@constants/cards';
 import { Headings } from '@components/Typography/Headings';
 
 const validationSchema = Yup.object().shape({

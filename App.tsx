@@ -1,19 +1,19 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import ToastProvider from './src/components/Toast';
+import ToastProvider from '@components/Toast/Toast';
 import { RootStackParamList } from 'src/types/navigation';
 import * as Font from "expo-font";
 
-import HomeScreen from './src/screens/HomeScreen';
-import ScheduleScreen from './src/screens/ScheduleScreen';
+import HomeScreen from '@screens/HomeScreen';
+import ScheduleScreen from '@screens/ScheduleScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 function App() {
   const [fontsLoaded, fontError] = Font.useFonts({
-    "DM-Sands-Italic": require("./assets/fonts/DMSans-Italic-VariableFont_opsz,wght.ttf"),
-    "DM-Sands": require("./assets/fonts/DMSans-VariableFont_opsz,wght.ttf"),
+    "DM-Sands-Italic": require("@/assets/fonts/DMSans-Italic-VariableFont_opsz,wght.ttf"),
+    "DM-Sands": require("@/assets/fonts/DMSans-VariableFont_opsz,wght.ttf"),
   });
 
   return (
