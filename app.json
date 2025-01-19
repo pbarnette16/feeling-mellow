@@ -1,4 +1,11 @@
 {
   "name": "feeling-mellow",
-  "slug": "feeling-mellow"
+  "slug": "feeling-mellow",
+  "android": {
+    "package": "com.anonymous.feelingmellow"
+  },
+  "ios": {
+    "bundleIdentifier": "com.anonymous.feelingmellow"
+  },
+  "newArchEnabled": true
 }
