@@ -1,37 +1,53 @@
-import Toast, {ToastProps, InfoToast} from 'react-native-toast-message';
+import Toast, { 
+  ToastProps,
+  InfoToast,
+  InfoToastProps
+} from 'react-native-toast-message';
 import {
-    View,
-    Text,
-    StyleSheet,
-  } from 'react-native';
+  View,
+  Text,
+  StyleSheet,
+  ViewStyle
+} from 'react-native';
+import React from 'react';
 
-export { ToastProps };
+// Define props interface
+interface ToastComponentProps {
+  [key: string]: any;
+}
+
+// Define custom toast props interface extending InfoToastProps
+interface CustomInfoToastProps extends InfoToastProps {
+  style?: ViewStyle;
+  contentContainerStyle?: ViewStyle;
+  text1?: string;
+}
 
 const toastConfig = {
-  info: ({ args }: ToastProps) => (
+  info: (props: CustomInfoToastProps) => (
     <InfoToast
-    {...props}
-    style={{}}
-contentContainerStyle={{}}>
-    <View style={styles.container}>
-      <Text style={styles.text}>{props.text1}</Text>
-    </View>
+      {...props}
+      style={[styles.container, props.style]}
+      contentContainerStyle={[
+        styles.contentContainer,
+        props.contentContainerStyle
+      ]}
+    >
+      <View>
+        <Text style={styles.text}>{props.text1}</Text>
+      </View>
     </InfoToast>
   ),
 };
 
-// Export the Toast component for use in App.tsx
-const ToastProvider = ({args}):ToastProps => {
-  return(
-    <Toast config={toastConfig} {...args} />
-  );
+export const ToastComponent: React.FC<ToastComponentProps> = (props) => {
+  return <Toast config={toastConfig} {...props} />;
 };
-
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
-    backgroundColor: 'rgba(13, 148, 136, 0.1)', // Teal-soft
+    backgroundColor: 'rgb(13, 148, 136)', // Teal-soft
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -40,9 +56,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.04,
     shadowRadius: 14,
     elevation: 4,
+    marginHorizontal: 16,
+  },
+  contentContainer: {
     paddingVertical: 16,
     paddingHorizontal: 20,
-    marginHorizontal: 16,
   },
   text: {
     color: '#0D9488', // Teal
@@ -52,7 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ToastProvider;
-
-
-
+export default ToastComponent;

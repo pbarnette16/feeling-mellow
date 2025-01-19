@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import {colors} from '@constants/colors'
 
@@ -9,6 +9,7 @@ export interface ToggleProps {
 }
 
 export const Toggle = ({ value, onChange, disabled }: ToggleProps) => {
+
   return (
     <View style={[styles.container, disabled && styles.disabled]}>
       <TouchableOpacity
@@ -17,7 +18,7 @@ export const Toggle = ({ value, onChange, disabled }: ToggleProps) => {
           value === 'habit' && styles.selectedOption,
         ]}
         onPress={() => onChange('habit')}
-        disabled={disabled}
+        disabled={disabled || value === 'habit'}
       >
         <Text style={[
           styles.text,
@@ -33,7 +34,7 @@ export const Toggle = ({ value, onChange, disabled }: ToggleProps) => {
           value === 'once' && styles.selectedOption,
         ]}
         onPress={() => onChange('once')}
-        disabled={disabled}
+        disabled={disabled || value === 'once'}
       >
         <Text style={[
           styles.text,

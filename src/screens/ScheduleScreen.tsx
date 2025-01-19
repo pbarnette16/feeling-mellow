@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 import { IconButton } from '@/components/Button/IconButton';
 import { Dropdown } from '@components/Dropdown/Dropdown';
@@ -33,12 +34,14 @@ const validationSchema = Yup.object().shape({
 const ScheduleScreen = () => {
   const navigation = useNavigation();
   const [showSelector, setShowSelector] = useState(false);
+  const [resetDatePicker, setResetDatePicker] = useState(false);
   const addExercise = useStore((state) => state.addExercise);
+  
 
   const initialValues = {
     exerciseId: 0,
     card: undefined,
-    type: 'once' as const,
+    type: 'habit' as const,
     time: new Date(),
     timeStr: '',
     days: [] as number[],
@@ -51,6 +54,10 @@ const ScheduleScreen = () => {
       id: Date.now(),
       ...values,
     });
+    Toast.show({
+        type: 'info',
+        text1: 'Your changes have been saved.',
+      });
     navigation.goBack();
   };
 
@@ -83,8 +90,11 @@ const ScheduleScreen = () => {
                 <Toggle
                   value={values.type}
                   onChange={(value) => {
-                    setFieldValue('type', value);
-
+                    if(values.type !== value.type) {
+                        setFieldValue('type', value);
+                        setResetDatePicker(true);
+                        console.log('Reset date picker', resetDatePicker)
+                    }
                   }
                 }
                 />
@@ -110,11 +120,12 @@ const ScheduleScreen = () => {
                   onChange={(datetime) => {
                     setFieldValue('time', datetime);
                     setFieldValue('timeStr', datetime.toISOString());
+                    setResetDatePicker(false);
                     console.log(values)  
                 }}
                   placeholder={values.type==='habit'? "Select a time" : "Select a date/time"}
                   mode={values.type==='habit'? "time" : "datetime"}
-                  reset={true}
+                  reset={resetDatePicker}
                 />
               </View>
             </View>

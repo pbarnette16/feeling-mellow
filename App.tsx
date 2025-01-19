@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import ToastProvider from '@components/Toast/Toast';
-import { RootStackParamList } from 'src/types/navigation';
+import ToastComponent from '@components/Toast/Toast';
+import { RootStackParamList } from '@types/navigation';
 import * as Font from "expo-font";
 
 import HomeScreen from '@screens/HomeScreen';
@@ -28,7 +28,7 @@ function App() {
           <Stack.Screen name="Schedule" component={ScheduleScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-      <ToastProvider />
+      <ToastComponent />
     </>
   );
 }

@@ -24,6 +24,28 @@ export interface TimeInputProps {
   reset: boolean;
 }
 
+const formatDate = ({ mode, date }: {mode: Mode, date: Date}) => {
+  let outStr = '';
+  console.log(mode)
+  if (Mode.datetime === mode) {
+      const dateStr = date.toLocaleDateString('en-AU', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short'
+      });
+      const timeStr = date.toLocaleTimeString('en-AU', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }).toLowerCase();
+
+      outStr = dateStr.replace(',', '') + ', ' + timeStr;
+  } else {
+    outStr = date.toLocaleString('en-AU', {dateStyle: "medium",timeStyle: "short"});
+  }
+  return outStr;
+}
+
 export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disabled, mode, reset }: TimeInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [date, setDate] = useState<Date>(value);
@@ -38,7 +60,7 @@ export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disa
   const onClose = () => {
     setShow(false);
     onChange(date);
-    const dateStr = mode === "datetime" ? date.toLocaleString('en-AU', { timeStyle: "short"}): date.toLocaleTimeString('en-AU', { timeStyle: "short"});
+    const dateStr = formatDate({mode, date});
     console.log(dateStr);
     setDisplayDate(dateStr);
     setTimeSet(true);
@@ -61,19 +83,16 @@ export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disa
  const extractNewDate = (event: DateTimePickerEvent, date?: Date) => {
 
   if(date) {
-    console.log('New date details');
-    console.log(date.toLocaleTimeString('en-AU', { timeStyle: "short"}));
     setDate(date);
   }
   
  }
 
  useEffect(()=>{
-  console.log(reset)
   if(reset) {
     setTimeSet(false);
   }
- }, []);
+ }, [reset]);
  
 
   return (
@@ -115,15 +134,20 @@ export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disa
         >
           <View style={styles.overlay}>
             <View style={styles.popupContainer}>
-              <Text>{placeholder} </Text>
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                onChange={extractNewDate}
-                display="inline"
-              />
-               <Button title="Confirm" onPress={() => onClose()} />
+              
+                <Text>{placeholder} </Text>
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  onChange={extractNewDate}
+                  display="inline"
+                  minimumDate={new Date()}
+                />
+
+              
+                <Button title="Confirm" style={styles.buttonPlacement} onPress={() => onClose()} />
+              
             </View>
       </View>
     </Modal>
@@ -151,12 +175,22 @@ const styles = StyleSheet.create({
     height: height * 0.7,
     boxShadow: '0px 5px 20px 0px rgba(0, 0, 0, 0.10)',
     padding: 20,
+    gap: 20,
+    flexDirection: 'column',
+  
   },
   textContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignContent: 'center',
     height: 48,
+  },
+  calenderContainer: {
+    backgroundColor: 'pink'
+  },
+  buttonContainer: {
+    alignSelf: 'flex-end'
+    
   },
   overlay: {
     flex: 1,

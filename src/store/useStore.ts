@@ -5,7 +5,7 @@ export interface Exercise {
   type: 'habit' | 'once';
   exerciseId: number;
   time?: Date;
-  timeStr?: String;
+  timeStr?: string;
   date?: Date;
   days?: number[];
 }
