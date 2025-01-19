@@ -15,6 +15,7 @@ export const Dropdown = ({
   card,
   placeholder = 'Select activity',
   onPress,
+  onChange,
   disabled
 }: DropdownProps) => {
   return (

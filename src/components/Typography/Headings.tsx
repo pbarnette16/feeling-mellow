@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
+import { colors } from '@/constants/colors';
 
 export interface HeadingsProps {
   h1?: string;
@@ -32,22 +33,29 @@ const styles = StyleSheet.create({
   },
   h1: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: '500',
     lineHeight: 32,
+    fontFamily: "DM-Sans",
+    color: colors.Core['black'].value
   },
   h2: {
     fontSize: 20,
     fontWeight: '600',
     lineHeight: 28,
+    fontFamily: "DM-Sans"
   },
   h3: {
     fontSize: 18,
     fontWeight: '600',
     lineHeight: 24,
+    fontFamily: "DM-Sans",
   },
   subheader: {
-    fontSize: 16,
-    fontWeight: '400',
-    lineHeight: 24,
+    fontSize: 12,
+    fontWeight: '600',
+    lineHeight: 14,
+    fontFamily: "DM-Sans",
+    color: colors.Grey['dark-grey'].value,
+    letterSpacing: 2,
   },
 });

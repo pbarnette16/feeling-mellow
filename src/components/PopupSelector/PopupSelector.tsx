@@ -40,7 +40,6 @@ export const PopupSelector = ({
   return (
     <Modal
       visible={visible}
-      transparent
       animationType="slide"
       onRequestClose={onClose}
     >
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.Core['white'].value,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    maxHeight: height * 0.7,
+    maxHeight: height * 0.8,
     boxShadow: '0px 5px 20px 0px rgba(0, 0, 0, 0.10)',
     padding: 20,
   },
