@@ -26,7 +26,6 @@ export interface TimeInputProps {
 
 const formatDate = ({ mode, date }: {mode: Mode, date: Date}) => {
   let outStr = '';
-  console.log(mode)
   if (Mode.datetime === mode) {
       const dateStr = date.toLocaleDateString('en-AU', {
         weekday: 'short',
@@ -41,7 +40,7 @@ const formatDate = ({ mode, date }: {mode: Mode, date: Date}) => {
 
       outStr = dateStr.replace(',', '') + ', ' + timeStr;
   } else {
-    outStr = date.toLocaleString('en-AU', {dateStyle: "medium",timeStyle: "short"});
+    outStr = date.toLocaleString('en-AU', {timeStyle: "short"});
   }
   return outStr;
 }
@@ -61,7 +60,6 @@ export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disa
     setShow(false);
     onChange(date);
     const dateStr = formatDate({mode, date});
-    console.log(dateStr);
     setDisplayDate(dateStr);
     setTimeSet(true);
   } 

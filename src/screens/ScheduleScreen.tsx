@@ -21,10 +21,8 @@ import { colors } from '@/constants/colors';
 const validationSchema = Yup.object().shape({
   exerciseId: Yup.number().required('Please select an exercise'),
   type: Yup.string().oneOf(['habit', 'once']).required(),
-  time: Yup.string().when('type', {
-    is: 'once',
-    then: (schema) => schema.required('Please select a time'),
-  }),
+  time: Yup.date().required(),
+  timeStr: Yup.string().length(1, 'A date has not been selected.'),
   days: Yup.array().when('type', {
     is: 'habit',
     then: (schema) => schema.min(1, 'Please select at least one day'),
@@ -48,7 +46,7 @@ const ScheduleScreen = () => {
   };
 
   const handleSubmit = (values: typeof initialValues) => {
-    console.log("The form was successful! Need to add the toast notification");
+    console.log("The form was successful!");
     
     addExercise({
       id: Date.now(),
@@ -57,8 +55,10 @@ const ScheduleScreen = () => {
     Toast.show({
         type: 'info',
         text1: 'Your changes have been saved.',
+        onHide: () => {
+            navigation.goBack();
+        }
       });
-    navigation.goBack();
   };
 
   return (
@@ -90,10 +90,10 @@ const ScheduleScreen = () => {
                 <Toggle
                   value={values.type}
                   onChange={(value) => {
-                    if(values.type !== value.type) {
+                    if(values.type !== value) {
                         setFieldValue('type', value);
+                        setFieldValue('timeStr', '');
                         setResetDatePicker(true);
-                        console.log('Reset date picker', resetDatePicker)
                     }
                   }
                 }
@@ -107,7 +107,6 @@ const ScheduleScreen = () => {
                     selectedDays={values.days}
                     onChange={(days) => {
                     setFieldValue('days', days)
-                    console.log(JSON.stringify(values, null, 2));
                     }}
                   />
                 </View>
@@ -120,8 +119,6 @@ const ScheduleScreen = () => {
                   onChange={(datetime) => {
                     setFieldValue('time', datetime);
                     setFieldValue('timeStr', datetime.toISOString());
-                    setResetDatePicker(false);
-                    console.log(values)  
                 }}
                   placeholder={values.type==='habit'? "Select a time" : "Select a date/time"}
                   mode={values.type==='habit'? "time" : "datetime"}
