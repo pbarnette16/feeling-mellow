@@ -36,7 +36,7 @@ export const Default = () => {
 
 export const WithSelectedCard = () => {
     const [visible, setVisible] = useState(false);
-    const [selectedId, setSelectedId] = useState(42); // Worry time card
+    const [selectedId, setSelectedId] = useState(CardVariants.find(card => card.id === 42)); // Worry time card
 
   return (
     <View style={{ padding: 20 }}>

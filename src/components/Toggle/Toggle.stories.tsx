@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import Toggle  from './Toggle';
+import { Toggle }  from './Toggle';
 
 export default {
   title: 'Components/Toggle',

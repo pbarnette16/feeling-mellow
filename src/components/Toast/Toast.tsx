@@ -1,13 +1,14 @@
-import Toast, {InfoToast} from 'react-native-toast-message';
+import Toast, {ToastProps, InfoToast} from 'react-native-toast-message';
 import {
     View,
     Text,
     StyleSheet,
   } from 'react-native';
 
-/*
+export { ToastProps };
+
 const toastConfig = {
-  info: ({ props }: any) => (
+  info: ({ args }: ToastProps) => (
     <InfoToast
     {...props}
     style={{}}
@@ -18,7 +19,13 @@ contentContainerStyle={{}}>
     </InfoToast>
   ),
 };
-*/
+
+// Export the Toast component for use in App.tsx
+const ToastProvider = ({args}):ToastProps => {
+  return(
+    <Toast config={toastConfig} {...args} />
+  );
+};
 
 
 const styles = StyleSheet.create({
@@ -45,6 +52,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// Export the Toast component for use in App.tsx
-export default Toast;
+export default ToastProvider;
+
+
 

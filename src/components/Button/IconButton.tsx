@@ -1,13 +1,11 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import Feather from '@expo/vector-icons/Feather';
-import Entypo from '@expo/vector-icons/Entypo';
+import { Ionicons, Feather, Entypo } from '@expo/vector-icons';
 import {colors} from '../../constants/colors'
 
 export interface IconButtonProps {
   onPress: () => void;
-  name: keyof typeof Ionicons.glyphMap;
+  name: keyof typeof Ionicons.glyphMap | keyof typeof Feather.glyphMap | keyof typeof Entypo.glyphMap;
   size?: number;
   color?: string;
   disabled?: boolean;
@@ -17,7 +15,7 @@ export interface IconButtonProps {
 
 export const IconButton = ({
   onPress,
-  name,
+  name = "happy-outline",
   size = 18,
   color = '#1F2937',
   disabled,

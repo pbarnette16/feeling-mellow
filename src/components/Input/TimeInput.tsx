@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Modal, Pressable, Dimensions, } from 'react-native';
+import { View, Text, StyleSheet, Modal, Dimensions } from 'react-native';
 import { IconButton } from '../Button/IconButton';
 import { colors} from '../../constants/colors';
 import DateTimePicker, {DateTimePickerEvent} from '@react-native-community/datetimepicker';
 
 const { height } = Dimensions.get('window');
 
-export interface TimeInputProps {
-  value: Date;
-  onChange: (value: DateTimePickerEvent) => void;
-  placeholder?: string;
-  disabled?: boolean;
+export enum Mode {
+  date = "date",
+  time = "time"
 }
 
-export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disabled }: TimeInputProps) => {
+type T_Mode = keyof typeof Mode;
+
+export interface TimeInputProps {
+  value: Date;
+  onChange: (event: DateTimePickerEvent, value: Date) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  mode: T_Mode;
+}
+
+export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disabled, mode }: TimeInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [date, setDate] = useState(value);
-  const [mode, setMode] = useState("time");
+  const [date, setDate] = useState<Date>(value);
   const [show, setShow] = useState(false);
   const [timeSet, setTimeSet] = useState(false);
 
@@ -66,9 +73,12 @@ export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disa
                 value={date}
                 mode={mode}
                 onChange={(event, date)=> {
-                  setDate(date);
-                  setShow(false);
-                  setTimeSet(true);
+                  if(event.type === 'set' && date) {
+                    setDate(date);
+                    setShow(false);
+                    setTimeSet(true);
+                  }
+                  
                 }}
                 display="default"
               />

@@ -8,7 +8,6 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { colors} from '../../constants/colors'
 import { IconButton } from '../Button/IconButton'
 import Card from '../Card/Card';
@@ -19,8 +18,8 @@ export interface PopupSelectorProps {
   visible: boolean;
   onClose: () => void;
   cards: CardVariantsProps[];
-  selectedId?: number;
-  onSelect: (id: number) => void;
+  selectedCard?: CardVariantsProps;
+  onSelect: (card: CardVariantsProps) => void;
   title?: string;
 }
 
@@ -30,12 +29,12 @@ export const PopupSelector = ({
   visible,
   onClose,
   cards,
-  selectedId,
+  selectedCard,
   onSelect,
   title = 'Select exercise',
 }: PopupSelectorProps) => {
-  const handleCardPress = (id: number) => {
-    onSelect(id);
+  const handleCardPress = (card: CardVariantsProps) => {
+    onSelect(card);
     onClose();
   };
   return (
@@ -64,7 +63,7 @@ export const PopupSelector = ({
                 headerText={card.name}
                 subHeaderText={card.blurb}
                 chipText={card.time}
-                onPress={handleCardPress}
+                onPress={() => handleCardPress(card)}
                 disabled={false}
               />
             ))}

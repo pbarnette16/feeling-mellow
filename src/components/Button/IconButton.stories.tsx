@@ -10,7 +10,7 @@ export default {
 
 export const Default = ({...args}) => (
   <View style={{ padding: 20 }}>
-    <IconButton {...args} onPress={() => console.log('pressed')} />
+    <IconButton name="happy-outline" {...args} onPress={() => console.log('pressed')} />
   </View>
 );
 

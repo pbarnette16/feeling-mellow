@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Button, Text } from 'react-native';
 import { PopupSelector } from './PopupSelector';
-import CardVariants from '../../constants/cards';
+import CardVariants, { CardVariantsProps } from '@constants/cards';
 
 
 
@@ -13,7 +13,7 @@ export default {
 
 export const WithCards = () => {
   const [visible, setVisible] = useState(false);
-  const [selectedId, setSelectedId] = useState<number | undefined>();
+  const [selectedCard, setSelectedCard] = useState<CardVariantsProps | undefined>();
 
   return (
     <View style={{ padding: 20 }}>
@@ -25,15 +25,15 @@ export const WithCards = () => {
         visible={visible}
         onClose={() => setVisible(false)}
         cards={CardVariants}
-        selectedId={selectedId}
-        onSelect={(id) => {
-          setSelectedId(id);
+        selectedCard={selectedCard}
+        onSelect={(card) => {
+          setSelectedCard(card);
           console.log('Selected card:', CardVariants.find(card => card.id === id));
         }}
         title="Select a Card"
       />
       <View>
-        <Text>Card selected {selectedId}</Text>
+        <Text>Card selected {selectedCard?.id}</Text>
       </View>
     </View>
   );
@@ -41,7 +41,7 @@ export const WithCards = () => {
 
 export const WithPreselectedCard = () => {
   const [visible, setVisible] = useState(false);
-  const [selectedId, setSelectedId] = useState(42); // Worry time card
+  const [selectedCard, setSelectedCard] = useState(CardVariants.find(card => card.id === 42)); // Worry time card
 
   return (
     <View style={{ padding: 20 }}>
@@ -53,12 +53,15 @@ export const WithPreselectedCard = () => {
         visible={visible}
         onClose={() => setVisible(false)}
         cards={CardVariants}
-        selectedId={selectedId}
-        onSelect={setSelectedId}
+        selectedCard={selectedCard}
+        onSelect={(card) => {
+          setSelectedCard(card);
+          console.log('Selected card:', CardVariants.find(card => card.id === id));
+        }}
         title="Select a Card"
       />
       <View>
-        <Text>Card selected {selectedId}</Text>
+        <Text>Card selected {selectedCard?.id}</Text>
       </View>
     </View>
   );

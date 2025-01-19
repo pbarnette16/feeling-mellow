@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import {colors} from '../../constants/colors'
+import {colors} from '@constants/colors'
 
 export interface ToggleProps {
   value: 'habit' | 'once';
@@ -8,7 +8,7 @@ export interface ToggleProps {
   disabled?: boolean;
 }
 
-const Toggle = ({ value, onChange, disabled }: ToggleProps) => {
+export const Toggle = ({ value, onChange, disabled }: ToggleProps) => {
   return (
     <View style={[styles.container, disabled && styles.disabled]}>
       <TouchableOpacity
@@ -46,8 +46,6 @@ const Toggle = ({ value, onChange, disabled }: ToggleProps) => {
     </View>
   );
 };
-
-export default Toggle;
 
 const styles = StyleSheet.create({
   container: {
