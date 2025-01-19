@@ -1,87 +1,129 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Modal, Dimensions } from 'react-native';
-import { IconButton } from '../Button/IconButton';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Modal, Dimensions, TouchableOpacity } from 'react-native';
+import { IconButton } from '@components/Button/IconButton';
 import { colors} from '../../constants/colors';
 import DateTimePicker, {DateTimePickerEvent} from '@react-native-community/datetimepicker';
+import { Button } from '@components/Button/Button';
 
 const { height } = Dimensions.get('window');
 
 export enum Mode {
   date = "date",
-  time = "time"
+  time = "time",
+  datetime = "datetime",
 }
 
 type T_Mode = keyof typeof Mode;
 
 export interface TimeInputProps {
   value: Date;
-  onChange: (event: DateTimePickerEvent, value: Date) => void;
+  onChange: (value: Date) => void;
   placeholder?: string;
   disabled?: boolean;
   mode: T_Mode;
+  reset: boolean;
 }
 
-export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disabled, mode }: TimeInputProps) => {
+export const TimeInput = ({ value, onChange, placeholder = 'Select a time', disabled, mode, reset }: TimeInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [date, setDate] = useState<Date>(value);
   const [show, setShow] = useState(false);
   const [timeSet, setTimeSet] = useState(false);
+  const [displayDate, setDisplayDate] = useState('');
 
   const showTimepicker = () => {
     setShow(true);
   };
 
-  const onClose = () => setShow(false);
+  const onClose = () => {
+    setShow(false);
+    onChange(date);
+    const dateStr = mode === "datetime" ? date.toLocaleString('en-AU', { timeStyle: "short"}): date.toLocaleTimeString('en-AU', { timeStyle: "short"});
+    console.log(dateStr);
+    setDisplayDate(dateStr);
+    setTimeSet(true);
+  } 
 
   const handleClear =  () => {
     setTimeSet(false);
     setDate(new Date());
   };
 
+  const onPress = () => {
+    if(!timeSet) {
+      showTimepicker()
+    }
+    else {
+      handleClear()
+    }
+  }
+
+ const extractNewDate = (event: DateTimePickerEvent, date?: Date) => {
+
+  if(date) {
+    console.log('New date details');
+    console.log(date.toLocaleTimeString('en-AU', { timeStyle: "short"}));
+    setDate(date);
+  }
+  
+ }
+
+ useEffect(()=>{
+  console.log(reset)
+  if(reset) {
+    setTimeSet(false);
+  }
+ }, []);
+ 
+
   return (
     <>
-    <View style={[
+    
+      <TouchableOpacity
+        onPress={onPress}
+        disabled={disabled}
+        style={[
+          disabled && styles.disabled
+        ]}>
+        <View style={[
       styles.container,
       isFocused && styles.focused,
       disabled && styles.disabled
     ]}>
-      {!timeSet && (
-        <IconButton name="add" onPress={() => showTimepicker()} disabled={disabled} />
-      )}
-      <View style={styles.textContainer}>
-        <Text style={[styles.input, timeSet && styles.selected]}>{!timeSet ? placeholder : date.toLocaleTimeString('en-AU', { timeStyle: "short"}) }</Text>
-      </View>
-      
-      {timeSet && (
-        <View style={styles.clearBtn}>
-          <IconButton name="trash-2" onPress={() => handleClear()} disabled={disabled} />
+        
+        {!timeSet && (
+          <IconButton name="add" onPress={onPress} disabled={disabled} />
+        )}
+        <View style={styles.textContainer}>
+          <Text style={[styles.input, timeSet && styles.selected]}>{!timeSet ? placeholder : displayDate}</Text>
         </View>
-      )}
-    </View>
+        
+        {timeSet && (
+          <View style={styles.clearBtn}>
+            <IconButton name="trash-2" onPress={onPress} disabled={disabled} />
+          </View>
+        )}
+      
+      </View>
+      </TouchableOpacity>
+
     {show && (
       <Modal
           visible={show}
-          transparent
           animationType="slide"
           onRequestClose={onClose}
         >
           <View style={styles.overlay}>
             <View style={styles.popupContainer}>
-              <Text>Please select a time: </Text>
+              <Text>{placeholder} </Text>
               <DateTimePicker
                 testID="dateTimePicker"
                 value={date}
                 mode={mode}
-                onChange={(event, date)=> {
-                  if(event.type === 'set' && date) {
-                    setDate(date);
-                    setShow(false);
-                    setTimeSet(true);
-                  }
-                  
-                }}
-                display="default"
+                onChange={extractNewDate}
+                display="inline"
               />
+               <Button title="Confirm" onPress={() => onClose()} />
             </View>
       </View>
     </Modal>

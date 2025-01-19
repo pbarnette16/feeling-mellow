@@ -4,8 +4,9 @@ export interface Exercise {
   id: number;
   type: 'habit' | 'once';
   exerciseId: number;
-  time?: string;
-  date?: string;
+  time?: Date;
+  timeStr?: String;
+  date?: Date;
   days?: number[];
 }
 

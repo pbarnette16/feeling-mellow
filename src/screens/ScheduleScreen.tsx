@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 
+import { IconButton } from '@/components/Button/IconButton';
 import { Dropdown } from '@components/Dropdown/Dropdown';
 import { Toggle } from '@components/Toggle/Toggle';
 import { WeekDaySelect } from '@components/MultiSelect/WeekDaySelect';
@@ -13,8 +13,9 @@ import { TimeInput } from '@components/Input/TimeInput';
 import { Button } from '@components/Button/Button';
 import { PopupSelector } from '@components/PopupSelector/PopupSelector';
 import { useStore } from '@store/useStore';
-import CardVariants from '@constants/cards';
+import CardVariants, { CardVariantsProps } from '@constants/cards';
 import { Headings } from '@components/Typography/Headings';
+import { colors } from '@/constants/colors';
 
 const validationSchema = Yup.object().shape({
   exerciseId: Yup.number().required('Please select an exercise'),
@@ -36,12 +37,16 @@ const ScheduleScreen = () => {
 
   const initialValues = {
     exerciseId: 0,
-    type: 'habit' as const,
-    time: '',
+    card: undefined,
+    type: 'once' as const,
+    time: new Date(),
+    timeStr: '',
     days: [] as number[],
   };
 
   const handleSubmit = (values: typeof initialValues) => {
+    console.log("The form was successful! Need to add the toast notification");
+    
     addExercise({
       id: Date.now(),
       ...values,
@@ -59,18 +64,14 @@ const ScheduleScreen = () => {
         {({ handleSubmit, values, setFieldValue, isValid }) => (
           <View style={styles.content}>
             <View style={styles.header}>
-              <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                style={styles.backButton}
-              >
-                <Ionicons name="arrow-back" size={24} color="#1F2937" />
-              </TouchableOpacity>
-              <Headings h1="Schedule an exercise" />
+               <IconButton name="arrow-back" onPress={() => navigation.goBack()} />
             </View>
-
+            <View style={styles.headerTitle}>
+                <Headings h1="Schedule an exercise" />
+            </View>
             <View style={styles.form}>
               <View style={styles.section}>
-                <Headings h3="EXERCISE" />
+                <Headings subheader="EXERCISE" />
                 <Dropdown
                   card={CardVariants.find(card => card.id === values.exerciseId) || undefined}
                   onPress={() => setShowSelector(true)}
@@ -78,29 +79,42 @@ const ScheduleScreen = () => {
               </View>
 
               <View style={styles.section}>
-                <Headings h3="REPEAT" />
+                <Headings subheader="REPEAT" />
                 <Toggle
                   value={values.type}
-                  onChange={(value) => setFieldValue('type', value)}
+                  onChange={(value) => {
+                    setFieldValue('type', value);
+
+                  }
+                }
                 />
               </View>
 
               {values.type === 'habit' && (
                 <View style={styles.section}>
-                  <Headings h3="ON THESE DAYS" />
+                  <Headings subheader="ON THESE DAYS" />
                   <WeekDaySelect
                     selectedDays={values.days}
-                    onChange={(days) => setFieldValue('days', days)}
+                    onChange={(days) => {
+                    setFieldValue('days', days)
+                    console.log(JSON.stringify(values, null, 2));
+                    }}
                   />
                 </View>
               )}
 
               <View style={styles.section}>
-                <Headings h3="NOTIFY ME" />
+                <Headings subheader="NOTIFY ME" />
                 <TimeInput
                   value={values.time}
-                  onChange={(time) => setFieldValue('time', time)}
-                  placeholder="Select a time"
+                  onChange={(datetime) => {
+                    setFieldValue('time', datetime);
+                    setFieldValue('timeStr', datetime.toISOString());
+                    console.log(values)  
+                }}
+                  placeholder={values.type==='habit'? "Select a time" : "Select a date/time"}
+                  mode={values.type==='habit'? "time" : "datetime"}
+                  reset={true}
                 />
               </View>
             </View>
@@ -116,9 +130,11 @@ const ScheduleScreen = () => {
               visible={showSelector}
               onClose={() => setShowSelector(false)}
               cards={CardVariants}
-              selectedCard={values}
-              onSelect={(id) => {
-                setFieldValue('exerciseId', id);
+              selectedCard={values?.card}
+              onSelect={(cardSelected) => {
+                setFieldValue('exerciseId', cardSelected.id);
+                setFieldValue('card', CardVariants.find(card => card.id === cardSelected.id) || undefined)
+
                 setShowSelector(false);
               }}
             />
@@ -132,7 +148,7 @@ const ScheduleScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.Core['white'].value,
   },
   content: {
     flex: 1,
@@ -141,7 +157,12 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
+  },
+  headerTitle: {
+    gap: 10,
+    paddingTop: 24,
+    paddingBottom: 24,
+    marginTop: 10,
   },
   backButton: {
     marginRight: 16,
@@ -149,9 +170,11 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     gap: 24,
+    marginTop: 20
   },
   section: {
     gap: 8,
+    paddingBottom: 22,
   },
   saveButton: {
     marginTop: 'auto',

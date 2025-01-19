@@ -32,7 +32,7 @@ const HomeScreen = () => {
             exercises.map((exercise) => (
               <View key={exercise.id} style={styles.exerciseItem}>
                 <Text style={styles.exerciseName}>
-                  {getExerciseName(exercise.id)}
+                  {getExerciseName(exercise.exerciseId)}
                 </Text>
                 <Text style={styles.exerciseDetail}>
                   Type: {exercise.type === 'habit' ? 'Habit' : 'Once-off'}
@@ -44,7 +44,8 @@ const HomeScreen = () => {
                 )}
                 {exercise.time && (
                   <Text style={styles.exerciseDetail}>
-                    Time: {exercise.time}
+                    Time: {
+                    exercise.type === 'habit' ? exercise.time.toLocaleTimeString('en-AU', { timeStyle: "short"}): exercise.time.toLocaleString('en-AU', { dateStyle: "medium",timeStyle: "short"})}
                   </Text>
                 )}
               </View>
