@@ -3,14 +3,14 @@
 A modern React Native mobile application built with Expo, featuring a comprehensive component library with Storybook integration, testing setup, and state management.
 
 ## Notes
-I have done my best to approimate the desgins and interactions. There are a few areas where i've gone off script:
+I have done my best to approximate the designs and interactions. There are a few areas where i've gone off script:
 
-- The date picker is different than the design as the plugin for React Native was not able to properly build on the current version of Expo. There is a bug filed but no resolution.
-- The date picker is shown in a modal, this is not in the design. And it changes based on if you're chosing a time or a date/time. Need to spend a bit more time on this.
-- The time clears when switching between the habit and once off toggle.
-- Not quite sure why there are 2 notifications. I should have asked for more of an explination. 
+- The date picker is different from the design as the plugin for React Native was not able to properly build on the current version of Expo. There is a bug filed but no resolution.
+- The date picker is shown in a modal, this is not in the design. And it changes based on if you're choosing a time or a date/time. Need to spend a bit more time on this.
+- The time clears when switching between the "habit" and "once off" toggle.
+- Not quite sure why there are 2 notifications. I should have asked for more of an explanation. 
 - I am still tweaking some of the form interactions with clearing and validations.
-- When a form is submitted the app will navigate back to a listing page which will show the previous selections coming from state.
+- When a form is submitted the app will navigate back to a listing page which will show the previous selections coming from the state.
 - Editing of state is left for further work.
 - No frameworks were used for this project to show my ability to create components from scratch.
 - I was a little rusty to get started as I haven't been coding consistently since leaving my previous job. I will only get faster over time as I flex that muscle again. 
