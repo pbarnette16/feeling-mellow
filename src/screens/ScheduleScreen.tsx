@@ -22,7 +22,6 @@ const validationSchema = Yup.object().shape({
   exerciseId: Yup.number().required('Please select an exercise'),
   type: Yup.string().oneOf(['habit', 'once']).required(),
   time: Yup.date().required(),
-  timeStr: Yup.string().length(1, 'A date has not been selected.'),
   days: Yup.array().when('type', {
     is: 'habit',
     then: (schema) => schema.min(1, 'Please select at least one day'),

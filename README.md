@@ -2,6 +2,20 @@
 
 A modern React Native mobile application built with Expo, featuring a comprehensive component library with Storybook integration, testing setup, and state management.
 
+## Notes
+I have done my best to approimate the desgins and interactions. There are a few areas where i've gone off script:
+
+- The date picker is different than the design as the plugin for React Native was not able to properly build on the current version of Expo. There is a bug filed but no resolution.
+- The date picker is shown in a modal, this is not in the design. And it changes based on if you're chosing a time or a date/time. Need to spend a bit more time on this.
+- The time clears when switching between the habit and once off toggle.
+- Not quite sure why there are 2 notifications. I should have asked for more of an explination. 
+- I am still tweaking some of the form interactions with clearing and validations.
+- When a form is submitted the app will navigate back to a listing page which will show the previous selections coming from state.
+- Editing of state is left for further work.
+- No frameworks were used for this project to show my ability to create components from scratch.
+- I was a little rusty to get started as I haven't been coding consistently since leaving my previous job. I will only get faster over time as I flex that muscle again. 
+- Hopefully this will give a good feel of my abilities and it aligns with the current Mello app structure. 
+
 ## 📱 Target Devices
 
 - iPhone 12
@@ -28,10 +42,29 @@ npm run dev
 npm run storybook
 ```
 
-4. Run tests:
+## Selected script explinations
+
 ```bash
-npm test
+npm run build-storybook
 ```
+This builds storybook stories
+
+```bash
+npm run storybook-generate
+```
+This builds storybook stories for viewing on device.
+
+```bash
+npm run storybook:<device: ios | andorid>
+```
+Starts the <device> project in Storybook mode
+
+```bash
+npm run ios:iPhone_14
+```
+Starts the project in on the iPhone 14. May require installing the simulator on your machine. 
+
+
 
 ## 🛠 Tech Stack
 
@@ -70,12 +103,6 @@ npm test
   - Visual testing
   - Interactive documentation
 
-### Testing
-- **Jest**: Testing framework
-- **@testing-library/react-native**: Component testing
-  - Encourages testing user interactions
-  - Simulates real user behavior
-  - Accessibility-focused testing
 
 ### UI Components
 The project includes a comprehensive set of reusable components:
@@ -108,15 +135,46 @@ src/
 │   ├── Button/
 │   │   ├── Button.tsx
 │   │   ├── Button.stories.tsx
-│   │   ├── __tests__/
-│   │   │   └── Button.test.tsx
 │   │   ├── IconButton.tsx
+│   │   ├── IconButton.stories.tsx
+│   │   ├── NavigationButton.stories.tsx
 │   │   └── NavigationButton.tsx
+│   ├── Card/
+│   │   ├── Card.tsx
+│   │   └── Card.stories.tsx
+│   ├── Chip/
+│   │   ├── Chip.tsx
+│   │   └── Chip.stories.tsx
+│   ├── Dropdown/
+│   │   ├── Dropdown.tsx
+│   │   └── Dropdown.stories.tsx
 │   ├── Input/
+│   │   ├── TimeInput.tsx
+│   │   └── TimeInput.stories.tsx
 │   ├── MultiSelect/
+│   │   ├── MultiSelectButton.tsx
+│   │   ├── MultiSelectButton.stories.tsx
+│   │   ├── WeekDaySelect.tsx
+│   │   └── WeekDaySelect.stories.tsx
 │   ├── PopupSelector/
+│   │   ├── PopupSelector.tsx
+│   │   └── PopupSelector.stories.tsx
 │   ├── StyleGuide/
+│   │   ├── ColorPallette.tsx
+│   │   └── ColorPallet.stories.tsx
+│   ├── Toast/
+│   │   ├── Toast.tsx
+│   │   └── Toast.stories.tsx
+│   ├── Toggle/
+│   │   ├── Toggle.tsx
+│   │   └── Toggle.stories.tsx
 │   └── Typography/
+│       ├── Headings.tsx
+│       └── Headings.stories.tsx
+├── constants/
+│   ├── typography.tsx
+│   ├── cards.tsx
+│   └── colors.tsx
 ├── screens/
 │   ├── HomeScreen.tsx
 │   └── ScheduleScreen.tsx
@@ -131,34 +189,51 @@ src/
 ### Colors
 The application uses a consistent color palette defined in `src/components/StyleGuide/ColorPalette.tsx`:
 
-- Gray scale (50-900)
-- Blue scale (50-900)
-- Red scale (50-600)
+- Core
+  - Teal: '#407178'
+  - White:  '#FFFFFF',
+  - Black: '#000000'
+- Grey
+  - Lightest Grey: '#F5F5F5'
+  - Light Grey: '#EBEBEB'
+  - Medium Grey 3: '#999'
+  - Darg Grey: '#7D7D7D'
+- Teal
+  - default:'#407178'
+- Classification
+  - orange: '#FFCC99
+  - purple: '#E1C7FF'
+  - blue: '#AAC0FF'
+  - green: '#CBF8D0'
 
 ### Typography
 Consistent text styles defined in `src/components/Typography/Headings.tsx`:
+All text is displayed using either "DM Sands" or "DM Sands Italic"
 
-- H1: 24px, Bold
-- H2: 20px, Semibold
-- H3: 18px, Semibold
-- Subheader: 16px, Regular
-
-## 🧪 Testing Guidelines
-
-1. Every component should have:
-   - Unit tests for logic
-   - Integration tests for user interactions
-   - Snapshot tests for UI consistency
-
-2. Test files location:
-   - Place in `__tests__` directory next to component
-   - Name pattern: `ComponentName.test.tsx`
-
-3. Testing principles:
-   - Test user interactions
-   - Verify component states
-   - Check accessibility
-   - Test error states
+- H1: {
+    fontSize: 24,
+    fontWeight: '700',
+    lineHeight: 32,
+    fontFamily: "DM-Sands"
+  }
+- H2: {
+    fontSize: 20,
+    fontWeight: '600',
+    lineHeight: 28,
+    fontFamily: "DM-Sands"
+  }
+- H3: {
+    fontSize: 18,
+    fontWeight: '600',
+    lineHeight: 24,
+    fontFamily: "DM-Sands"
+  },
+-  subheader: {
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 24,
+    fontFamily: "DM-Sands"
+  }
 
 ## 📚 Storybook Usage
 
@@ -166,7 +241,6 @@ Consistent text styles defined in `src/components/Typography/Headings.tsx`:
    - Demonstrate all variants
    - Show interactive states
    - Include edge cases
-   - Document props usage
 
 2. Story organization:
    - Group by component type
@@ -205,7 +279,7 @@ Using React Navigation with:
 
 1. Component Creation:
    - Create story first (Storybook-driven development)
-   - Write tests before implementation
+   - Write tests before implementation [For future extension of the work]
    - Document props and usage
    - Include accessibility considerations
 
@@ -237,12 +311,7 @@ When working with this project, note:
    - Follow existing store patterns
    - Exercise state management patterns
 
-3. Testing:
-   - Always maintain test coverage
-   - Follow existing test patterns
-   - Include all test cases
-
-4. Styling:
+3. Styling:
    - Use StyleSheet.create
    - Follow color palette
    - Maintain consistent spacing
